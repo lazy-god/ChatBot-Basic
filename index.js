@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 1337;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.get(express.static(path.join(__dirname, 'public')));
+app.get('/', express.static(path.join(__dirname, 'public')));
 
 // Creates the endpoint for our webhook 
 app.post('/webhook', (req, res) => {
