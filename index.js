@@ -1,12 +1,15 @@
 const
     express = require('express'),
     bodyParser = require('body-parser'),
+    path = require('path'),
     app = express();
 
 const PORT = process.env.PORT || 1337;
     
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+
+app.get(express.static(path.join(__dirname, 'public')));
 
 // Creates the endpoint for our webhook 
 app.post('/webhook', (req, res) => {
