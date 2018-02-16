@@ -2,9 +2,11 @@ const
     express = require('express'),
     bodyParser = require('body-parser'),
     path = require('path'),
+    apiai = require('apiai'),
     request = require('request'),
     config = require('config'),
-    app = express();
+    app = express(),
+    apiApp = apiai(config.get('clientaccesstoken'));
 
 const PORT = process.env.PORT || 1337;
 const PAGE_ACCESS_TOKEN = config.get('pageAccessToken');
@@ -92,9 +94,20 @@ function handleMessage(sender_psid, received_message) {
 
         // Creates the payload for a basic text message, which
         // will be added to the body of our request to the Send API
-        response = {
-            "text": `You sent the message: "${received_message.text}". Now send me an attachment!`
-        }
+        let apiResponse = apiApp.textRequest(received_message.text, {
+            sessionId: received_message.text
+        })
+
+        apiResponse.on('response', (res) => {
+            response = res;
+        })
+
+        apiResponse.on('error', () => console.log("Error from api ai"))
+
+        // response = {
+        //     "text": `You sent the message: "${received_message.text}". Now send me an attachment!`
+        // }
+        apiResponse.end();
 
     } else if (received_message.attachments) {
 
