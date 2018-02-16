@@ -98,9 +98,9 @@ function handleMessage(sender_psid, received_message) {
         })
 
         apiResponse.on('response', (res) => {
-            response = res.fulfillment.messages[0].speech;
+            response = res.result.fulfillment.messages[0].speech;
             console.log('Inside', res);
-            console.log('Inside', res.fulfillment.messages[0].speech);
+            console.log('Inside', res.result.fulfillment.messages[0].speech);
 
             // Sends the response message
             callSendAPI(sender_psid, response);
