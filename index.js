@@ -30,7 +30,7 @@ app.post('/webhook', (req, res) => {
             // Gets the message. entry.messaging is an array, but 
             // will only ever contain one message, so we get index 0
             console.log(entry)
-            if (entry.changes[0].field == "feed") {
+            if (entry.changes && entry.changes[0].field == "feed") {
                 let webhook_event = entry.changes[0].value;
                 console.log(webhook_event);
 
