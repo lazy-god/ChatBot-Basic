@@ -101,6 +101,9 @@ function handleMessage(sender_psid, received_message) {
             response = res.fulfillment.messages[0].speech;
             console.log('Inside', res);
             console.log('Inside', res.fulfillment.messages[0].speech);
+
+            // Sends the response message
+            callSendAPI(sender_psid, response);
         })
 
         apiResponse.on('error', () => console.log("Error from api ai"))
@@ -141,10 +144,10 @@ function handleMessage(sender_psid, received_message) {
             }
         }
 
-    }
+        // Sends the response message
+        callSendAPI(sender_psid, response);
 
-    // Sends the response message
-    callSendAPI(sender_psid, response); 
+    }
 }
 
 // Handles messaging_postbacks events
