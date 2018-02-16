@@ -35,10 +35,12 @@ app.post('/webhook', (req, res) => {
                 console.log(webhook_event);
 
                 // Get the PSID
-                let sender_psid = webhook_event.sender_id;
+                let sender_psid = webhook_event.from.id;
+                let sender_name = webhook_event.from.name;
                 console.log('Sender PSID: ' + sender_psid);
+                console.log('Sender PSID: ' + sender_name);
                 
-                handleComment(sender_psid);
+                handleComment(sender_psid, sender_name);
             } else {
                 let webhook_event = entry.messaging[0];
                 console.log(webhook_event);
@@ -181,9 +183,9 @@ function handlePostback(sender_psid, received_postback) {
     callSendAPI(sender_psid, response);
 }
 
-function handleComment(sender_psid) {
+function handleComment(sender_psid, sender_name) {
     let response = {
-        "text": "Hi, I am LazyGod here to help you with your recent activity on LazyGod Page\nAsk me anything"
+        "text": `Hi ${sender_name}, I am LazyGod here to help you with your recent activity on LazyGod Page\nAsk me anything`
     }
 
     // Send the message to related to comment
