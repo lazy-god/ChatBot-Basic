@@ -5,7 +5,7 @@ const
     apiai = require('apiai'),
     request = require('request'),
     config = require('config'),
-    crypto = require('crypto-js'),
+    // crypto = require('crypto-js'),
     app = express(),
     apiApp = apiai(config.get('clientaccesstoken'));
 
