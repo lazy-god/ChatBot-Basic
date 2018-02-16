@@ -30,21 +30,32 @@ app.post('/webhook', (req, res) => {
             // Gets the message. entry.messaging is an array, but 
             // will only ever contain one message, so we get index 0
             console.log(entry)
-            let webhook_event = entry.messaging[0];
-            console.log(webhook_event);
+            if (entry.changes[0].field == "feed") {
+                let webhook_event = entry.changes[0].value;
+                console.log(webhook_event);
 
-            // Get the sender PSID
-            let sender_psid = webhook_event.sender.id;
-            console.log('Sender PSID: ' + sender_psid);
-
-            // Check if the event is a message or postback and
-            // pass the event to the appropriate handler function
-            if (webhook_event.message) {
-                handleMessage(sender_psid, webhook_event.message);
-            } else if (webhook_event.postback) {
-                handlePostback(sender_psid, webhook_event.postback);
+                // Get the PSID
+                let sender_psid = webhook_event.sender_id;
+                console.log('Sender PSID: ' + sender_psid);
+                
+                handleComment(sender_psid);
             } else {
-                console.log("Getting something else")
+                let webhook_event = entry.messaging[0];
+                console.log(webhook_event);
+
+                // Get the sender PSID
+                let sender_psid = webhook_event.sender.id;
+                console.log('Sender PSID: ' + sender_psid);
+
+                // Check if the event is a message or postback and
+                // pass the event to the appropriate handler function
+                if (webhook_event.message) {
+                    handleMessage(sender_psid, webhook_event.message);
+                } else if (webhook_event.postback) {
+                    handlePostback(sender_psid, webhook_event.postback);
+                } else {
+                    console.log("Getting something else")
+                }
             }
         });
 
@@ -165,7 +176,17 @@ function handlePostback(sender_psid, received_postback) {
     } else if (payload === 'no') {
         response = { "text": "Oops, try sending another image." }
     }
+
     // Send the message to acknowledge the postback
+    callSendAPI(sender_psid, response);
+}
+
+function handleComment(sender_psid) {
+    let response = {
+        "text": "Hi, I am LazyGod here to help you with your recent activity on LazyGod Page\nAsk me anything"
+    }
+
+    // Send the message to related to comment
     callSendAPI(sender_psid, response);
 }
 
