@@ -98,11 +98,10 @@ function handleMessage(sender_psid, received_message) {
         })
 
         apiResponse.on('response', (res) => {
-            response = res;
+            response = res.fulfillment.messages[0].speech;
             console.log('Inside', res);
+            console.log('Inside', res.fulfillment.messages[0].speech);
         })
-
-        console.log(response);
 
         apiResponse.on('error', () => console.log("Error from api ai"))
 
