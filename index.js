@@ -5,6 +5,7 @@ const
     apiai = require('apiai'),
     request = require('request'),
     config = require('config'),
+    crypto = require('crypto-js'),
     app = express(),
     apiApp = apiai(config.get('clientaccesstoken'));
 
@@ -26,6 +27,9 @@ app.post('/webhook', (req, res) => {
 
         // Iterates over each entry - there may be multiple if batched
         body.entry.forEach(function (entry) {
+
+            let appsecret_proof = crypto.createHmac('sha256', config.get('appSecret')).update(config.get('pageAccessToken')).digest('hex')
+            console.log(appsecret_proof);
 
             // Gets the message. entry.messaging is an array, but 
             // will only ever contain one message, so we get index 0
