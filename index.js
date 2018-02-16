@@ -28,7 +28,7 @@ app.post('/webhook', (req, res) => {
         // Iterates over each entry - there may be multiple if batched
         body.entry.forEach(function (entry) {
 
-            let appsecret_proof = crypto.HmacSHA256(config.get('pageAccessToken'), config.get('appSecret')).toString(CryptoJS.enc.Hex);
+            let appsecret_proof = crypto.HmacSHA256(config.get('pageAccessToken'), config.get('appSecret')).toString(crypto.enc.Hex);
             console.log(appsecret_proof);
 
             // Gets the message. entry.messaging is an array, but 
